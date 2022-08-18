@@ -27,4 +27,32 @@ router.post('/', async (req,res) => {
     }
 })
 
+router.get('/', async (req, res) => {
+    try {
+        const products = await Products.find()
+        res.status(200).json(products)
+    } catch (error) {
+        res.status(500).json({error: error})
+    }
+})
+
+router.get('/:id', async (req, res) => {
+    const id = req.params.id
+
+    try {
+        const products = await Products.findOne({_id: id})
+
+        if(!products) {
+            res.status(422).json({message: 'Produto não encontrado!'})
+            return
+        }
+
+        res.status(200).json(products)
+    } catch (error) {
+        res.status(500).json({error: error})
+    }
+})
+
+
+
 module.exports = router
