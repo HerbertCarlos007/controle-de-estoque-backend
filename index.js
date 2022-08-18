@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const app = express()
+const productsRoutes = require('./routes/productsRoutes')
 
 const path = require('path')
 require('dotenv').config({path: path.resolve(__dirname, './.env')})
@@ -14,6 +15,7 @@ app.use(
 
 app.use(cors())
 app.use(express.json())
+app.use('/products', productsRoutes)
 
 app.get('/', (req,res) => {
     res.json({message: 'Oi Express!'})
