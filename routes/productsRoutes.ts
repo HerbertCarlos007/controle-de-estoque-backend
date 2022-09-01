@@ -1,5 +1,5 @@
 import express from 'express'
-import ProductsController from '../controller/ProductsController'
+import ProductsController from '../controllers/ProductsController'
 const router = require('express').Router()
 
 router.post('/products', ProductsController.create)
