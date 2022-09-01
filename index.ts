@@ -8,7 +8,7 @@ const productsRoutes = require('./routes/productsRoutes')
 const usersRoutes = require('./routes/userRoutes')
 import {sequelize} from './database/db'
 import {Request, Response} from 'express'
-
+import {router} from './routes/productsRoutes'
 
 app.use(
     express.urlencoded({
@@ -18,8 +18,9 @@ app.use(
 
 app.use(cors())
 app.use(express.json())
-app.use('/products', productsRoutes)
-app.use('/users', usersRoutes)
+// app.use('/products', productsRoutes)
+app.use(router)
+// app.use('/users', usersRoutes)
 
 app.get('/', (req: Request,res: Response) => {
     res.json({message: 'Oi Express!'})
