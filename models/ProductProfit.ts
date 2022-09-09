@@ -15,7 +15,6 @@ interface ProductsProfitCreationAttributes extends Optional<ProductsProfitAttrib
 })
 
 class ProductsProfits extends Model<ProductsProfitAttributes, ProductsProfitCreationAttributes> {
-
     @Column(DataType.DOUBLE)
     percentage!: number 
 

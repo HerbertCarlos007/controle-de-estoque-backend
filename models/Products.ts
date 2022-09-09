@@ -8,7 +8,7 @@ interface ProductsAttributes {
   amount: number
   brand: string
   purchasePrice: number
-  saleValue: number
+  
 }
 
 interface ProductsCreationAttributes extends Optional<ProductsAttributes, 'id'> {}
@@ -34,8 +34,6 @@ class Products extends Model <ProductsAttributes, ProductsCreationAttributes> {
   @Column(DataType.DOUBLE)
   purchasePrice: number | undefined
 
-  @Column(DataType.DOUBLE)
-  saleValue: number | undefined
 }
 
 export {Products}

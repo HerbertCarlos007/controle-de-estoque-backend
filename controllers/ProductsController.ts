@@ -1,10 +1,25 @@
 import { Request, Response } from "express";
 import { Products } from "../models/Products";
+import {ProductsProfits} from '../models/ProductProfit'
 
 class ProductsController {
     async findAll(req:Request, res:Response) {
+        const currentProductProfitId = await ProductsProfits.max('id')
+        const currentProductProfit = await ProductsProfits.findOne({
+            where: {
+                id: String(currentProductProfitId)
+            }
+        })
         const products = await Products.findAll()
-        return products.length > 0? res.status(200).json(products) : 
+        const productsWithSaleValue = products.map(product => ({
+            description: product.description, 
+            name:product.name, 
+            amount: product.amount, 
+            brand: product.brand, 
+            purchasePrice: product.purchasePrice,
+            saleValue: Number(product.purchasePrice) + (Number(product.purchasePrice) * Number(currentProductProfit?.percentage))
+        }))
+        return products.length > 0? res.status(200).json({productsWithSaleValue, currentProductProfit}) : 
         res.status(204).send()
     }
 
@@ -20,14 +35,14 @@ class ProductsController {
     }
 
     async create(req:Request, res:Response) {
-        const { name, description, amount, brand, purchasePrice, saleValue } = req.body
+        const { name, description, amount, brand, purchasePrice } = req.body
         const products = await Products.create({
             name,
             description,
             amount,
             brand,
             purchasePrice,
-            saleValue
+           
         })
         return res.status(201).json(products)
     }
