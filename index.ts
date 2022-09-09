@@ -3,12 +3,14 @@ require('dotenv').config({path: path.resolve(__dirname, './.env')})
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
-const app = express()
 const productsRoutes = require('./routes/productsRoutes')
 const usersRoutes = require('./routes/userRoutes')
 import {sequelize} from './database/db'
 import {Request, Response} from 'express'
-import {router} from './routes/productsRoutes'
+import router from './routes'
+
+
+const app = express()
 
 app.use(
     express.urlencoded({
@@ -18,9 +20,7 @@ app.use(
 
 app.use(cors())
 app.use(express.json())
-// app.use('/products', productsRoutes)
 app.use(router)
-// app.use('/users', usersRoutes)
 
 app.get('/', (req: Request,res: Response) => {
     res.json({message: 'Oi Express!'})
