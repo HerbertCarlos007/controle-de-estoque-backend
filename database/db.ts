@@ -1,4 +1,5 @@
 import { Sequelize } from 'sequelize-typescript'
+import { ProductsProfits } from '../models/ProductProfit'
 import {Products} from '../models/Products'
 import { Users } from '../models/Users'
 
@@ -10,6 +11,6 @@ const sequelize = new Sequelize({
   password: process.env.DATABASE_PASS,
   host: process.env.DATABASE_HOST,
 })
-sequelize.addModels([Products, Users])
+sequelize.addModels([Products, Users, ProductsProfits])
 
 export {sequelize}
