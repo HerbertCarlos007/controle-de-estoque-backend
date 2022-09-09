@@ -1,7 +1,6 @@
 import { Table, Column, Model, DataType, AllowNull } from 'sequelize-typescript'
 import { Optional } from 'sequelize'
 
-
 interface UsersAttributes {
     id: number
     name: string

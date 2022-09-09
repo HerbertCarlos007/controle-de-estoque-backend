@@ -12,8 +12,8 @@ class ProductsController {
         })
         const products = await Products.findAll()
         const productsWithSaleValue = products.map(product => ({
-            description: product.description, 
             name:product.name, 
+            description: product.description, 
             amount: product.amount, 
             brand: product.brand, 
             purchasePrice: product.purchasePrice,
