@@ -16,6 +16,7 @@ interface UsersCreationAttributes extends Optional<UsersAttributes, 'id'> { }
 
 class Users extends Model<UsersAttributes, UsersCreationAttributes> {
 
+
     @Column(DataType.TEXT)
     name: string | undefined
 
