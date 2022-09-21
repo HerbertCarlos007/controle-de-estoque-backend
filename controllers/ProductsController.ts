@@ -12,6 +12,7 @@ class ProductsController {
         })
         const products = await Products.findAll()
         const productsWithSaleValue = products.map(product => ({
+            id: product.id,
             name:product.name, 
             description: product.description, 
             amount: product.amount, 
@@ -19,7 +20,7 @@ class ProductsController {
             purchasePrice: product.purchasePrice,
             saleValue: Number(product.purchasePrice) + (Number(product.purchasePrice) * Number(currentProductProfit?.percentage))
         }))
-        return products.length > 0? res.status(200).json({productsWithSaleValue, currentProductProfit}) : 
+        return products.length > 0? res.status(200).json({products:productsWithSaleValue, currentProductProfit}) : 
         res.status(204).send()
     }
 
