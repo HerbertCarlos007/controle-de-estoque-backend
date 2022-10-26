@@ -14,7 +14,8 @@ class ProductsController {
         const productsWithSaleValue = products.map(product => ({
             id: product.id,
             name:product.name, 
-            description: product.description, 
+            description: product.description,
+            imageUrl: product.imageUrl,
             amount: product.amount, 
             brand: product.brand, 
             purchasePrice: product.purchasePrice,
@@ -36,10 +37,11 @@ class ProductsController {
     }
 
     async create(req:Request, res:Response) {
-        const { name, description, amount, brand, purchasePrice } = req.body
+        const { name, description, imageUrl, amount, brand, purchasePrice } = req.body
         const products = await Products.create({
             name,
             description,
+            imageUrl,
             amount,
             brand,
             purchasePrice,
@@ -67,6 +69,8 @@ class ProductsController {
         })
         return res.status(204).send()
     }
+
 }
+
 
 export default new ProductsController();

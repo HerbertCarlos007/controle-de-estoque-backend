@@ -3,7 +3,8 @@ import { Optional } from 'sequelize'
 
 interface ProductsAttributes {
   id: number
-  name: string 
+  name: string
+  imageUrl: string
   description: string
   amount: number
   brand: string
@@ -24,6 +25,9 @@ class Products extends Model <ProductsAttributes, ProductsCreationAttributes> {
 
    @Column(DataType.TEXT)
   description: string | undefined
+
+  @Column(DataType.TEXT)
+  imageUrl: string | undefined
 
   @Column(DataType.DOUBLE)
   amount: number | undefined
