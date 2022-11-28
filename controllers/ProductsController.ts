@@ -31,7 +31,8 @@ class ProductsController {
         })
         const profitValue =Number(product?.purchasePrice) * Number(currentProductProfit?.percentage)
         const saleValue = Number(product?.purchasePrice) + profitValue
-        return product ? res.status(200).json({ ...product, saleValue }) : res.status(204).send()
+        const saleValueDigitsCount = saleValue.toString().length
+        return product ? res.status(200).json({ ...product, saleValue:saleValue.toFixed(saleValueDigitsCount - 1) }) : res.status(204).send()
     }
 
     async create(req: Request, res: Response) {

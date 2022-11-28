@@ -6,7 +6,6 @@ import { Users } from '../models/Users'
 
 class AuthController {
 
-
     async authenticate(req: Request, res: Response) {
         const {email, password} = req.body
         const user = await Users.findOne({
