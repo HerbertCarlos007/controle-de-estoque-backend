@@ -21,3 +21,5 @@ class CartProductsController {
             res.status(204).send()
     }
 }
+
+export default new CartProductsController()
