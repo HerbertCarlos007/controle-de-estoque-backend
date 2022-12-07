@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { CartProducts } from "../models/CartProducts";
+import { Products } from '../models/Products'
 
 class CartProductsController {
 
@@ -15,7 +16,16 @@ class CartProductsController {
     }
 
     async productsOnCart(req: Request, res: Response) {
-        const products = await CartProducts.findAll()
+
+        CartProducts.hasMany(Products, {foreignKey: 'id'})
+        Products.belongsTo(CartProducts, {foreignKey: 'id'})
+
+        const products = await CartProducts.findAll({
+            include: [{
+                model: Products,
+                required: true
+            }]
+        })
 
         return products.length > 0 ? res.status(200).json(products) :
             res.status(204).send()
