@@ -17,13 +17,13 @@ class CartProductsController {
 
     async productsOnCart(req: Request, res: Response) {
 
-        CartProducts.hasMany(Products, {foreignKey: 'id'})
-        Products.belongsTo(CartProducts, {foreignKey: 'id'})
+        Products.hasMany(CartProducts)
+        CartProducts.belongsTo(Products)
 
         const products = await CartProducts.findAll({
             include: [{
                 model: Products,
-                required: true
+                required: true 
             }]
         })
 
