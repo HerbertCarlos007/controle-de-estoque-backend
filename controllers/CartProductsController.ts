@@ -10,17 +10,36 @@ interface IProduct {
     quantity?: number
 }
 interface IProductCart {
-    Product?: IProduct
+    Product?: IProduct,
+    quantity: number
 }
 
 class CartProductsController {
 
     async addToCart(req: Request, res: Response) {
         const { productId, userId } = req.body
+        const productCartAlreadyCreated = await CartProducts.findOne({
+            where: {
+                productId,
+                userId: 1
+            }
+        })
+        if (productCartAlreadyCreated) {
 
+            await CartProducts.update({
+                quantity: Number(productCartAlreadyCreated?.quantity) + 1
+            }, {
+                where: {
+                    productId,
+                    userId: 1
+                }
+            })
+            return res.status(201).json({ result: 'ok' })
+
+        }
         const cart = await CartProducts.create({
             productId,
-            userId,
+            userId: 1
         })
 
         return res.status(201).json(cart)
@@ -38,15 +57,21 @@ class CartProductsController {
             }]
         })) as IProductCart[]
 
+
+
+
         const productCartWithSaleValue = products.map((productCart: IProductCart) => {
+
             return {
                 id: productCart.Product?.id,
                 name: productCart.Product?.name,
+                quantity: productCart.quantity,
                 imageUrl: productCart.Product?.imageUrl,
                 purchasePrice: productCart.Product?.purchasePrice,
                 saleValue: Number(productCart.Product?.purchasePrice) + (Number(productCart.Product?.purchasePrice) * Number(currentProductProfit?.percentage))
             }
         })
+
 
         return products.length > 0 ? res.status(200).json(productCartWithSaleValue) :
             res.status(204).send()
@@ -55,13 +80,13 @@ class CartProductsController {
     async incrementProduct(req: Request, res: Response) {
         await CartProducts.update({ quantity: req.body.quantity }, {
             where: {
-              productId: req.params.productId,
-              userId: req.params.userId
+                productId: req.params.productId,
+                userId: req.params.userId
             }
-          });
+        });
 
-          return res.status(200).json({result:'ok'})
-          
+        return res.status(200).json({ result: 'ok' })
+
     }
 }
 
