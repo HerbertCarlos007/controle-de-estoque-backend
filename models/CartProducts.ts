@@ -6,6 +6,7 @@ import { Optional } from 'sequelize'
 interface CartProductsAttributes {
     productId: number
     userId: number
+    quantity?: number
 }
 
 interface CartProductsCreationAttributes extends Optional<CartProductsAttributes, 'productId'> { }
@@ -20,6 +21,11 @@ class CartProducts extends Model<CartProductsAttributes, CartProductsCreationAtt
 
     @Column(DataType.DOUBLE)
     userId!: number
+
+    @Column(DataType.DOUBLE)
+    quantity?: number
+
+
 
 }
 

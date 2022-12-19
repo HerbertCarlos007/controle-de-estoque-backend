@@ -7,6 +7,7 @@ interface IProduct {
     name: string,
     imageUrl: string,
     purchasePrice: string
+    quantity?: number
 }
 interface IProductCart {
     Product?: IProduct
@@ -19,7 +20,7 @@ class CartProductsController {
 
         const cart = await CartProducts.create({
             productId,
-            userId
+            userId,
         })
 
         return res.status(201).json(cart)
@@ -49,6 +50,18 @@ class CartProductsController {
 
         return products.length > 0 ? res.status(200).json(productCartWithSaleValue) :
             res.status(204).send()
+    }
+
+    async incrementProduct(req: Request, res: Response) {
+        await CartProducts.update({ quantity: req.body.quantity }, {
+            where: {
+              productId: req.params.productId,
+              userId: req.params.userId
+            }
+          });
+
+          return res.status(200).json({result:'ok'})
+          
     }
 }
 
