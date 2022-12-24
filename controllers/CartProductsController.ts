@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { CartProducts } from "../models/CartProducts";
 import { Products } from '../models/Products'
 import { getLastProfit } from "../utils/getLastProfit";
+import { Users } from '../models/Users'
 interface IProduct {
     id: number,
     name: string,
@@ -18,10 +19,11 @@ class CartProductsController {
 
     async addToCart(req: Request, res: Response) {
         const { productId, userId } = req.body
+
         const productCartAlreadyCreated = await CartProducts.findOne({
             where: {
                 productId,
-                userId: 1
+                userId
             }
         })
         if (productCartAlreadyCreated) {
@@ -31,7 +33,7 @@ class CartProductsController {
             }, {
                 where: {
                     productId,
-                    userId: 1
+                    userId
                 }
             })
             return res.status(201).json({ result: 'ok' })
@@ -39,7 +41,7 @@ class CartProductsController {
         }
         const cart = await CartProducts.create({
             productId,
-            userId: 1
+            userId
         })
 
         return res.status(201).json(cart)
@@ -71,7 +73,6 @@ class CartProductsController {
                 saleValue: Number(productCart.Product?.purchasePrice) + (Number(productCart.Product?.purchasePrice) * Number(currentProductProfit?.percentage))
             }
         })
-
 
         return products.length > 0 ? res.status(200).json(productCartWithSaleValue) :
             res.status(204).send()
