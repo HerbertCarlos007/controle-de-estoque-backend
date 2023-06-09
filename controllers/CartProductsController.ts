@@ -23,7 +23,8 @@ class CartProductsController {
         const productCartAlreadyCreated = await CartProducts.findOne({
             where: {
                 productId,
-                userId
+                userId: 1,
+                
             }
         })
         if (productCartAlreadyCreated) {
@@ -33,7 +34,7 @@ class CartProductsController {
             }, {
                 where: {
                     productId,
-                    userId
+                    userId: 1
                 }
             })
             return res.status(201).json({ result: 'ok' })
@@ -41,7 +42,8 @@ class CartProductsController {
         }
         const cart = await CartProducts.create({
             productId,
-            userId
+            userId: 1,
+            quantity: 1
         })
 
         return res.status(201).json(cart)
