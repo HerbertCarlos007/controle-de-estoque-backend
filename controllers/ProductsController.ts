@@ -1,17 +1,26 @@
 import { Request, Response } from "express";
 import { Products } from "../models/Products";
 import { ProductsProfits } from '../models/ProductProfit'
+import UploadImageService from "../services/UploadImageService";
+
 
 class ProductsController {
 
     async findAll(req: Request, res: Response) {
+        const { file } = req
         const currentProductProfit = await getLastProfit()
         const products = await Products.findAll()
+        const uploadImage = new UploadImageService
+
+        if (file) {
+            await uploadImage.execute(file)
+        }
+
         const productsWithSaleValue = products.map(product => ({
             id: product.id,
             name: product.name,
             description: product.description,
-            imageUrl: product.imageUrl,
+            imageUrl: file ? `https://teste-startpn.s3.amazonaws.com/${file.filename}` : null,
             amount: product.amount,
             brand: product.brand,
             purchasePrice: product.purchasePrice,
@@ -29,10 +38,10 @@ class ProductsController {
                 id: id
             }
         })
-        const profitValue =Number(product?.purchasePrice) * Number(currentProductProfit?.percentage)
+        const profitValue = Number(product?.purchasePrice) * Number(currentProductProfit?.percentage)
         const saleValue = Number(product?.purchasePrice) + profitValue
         const saleValueDigitsCount = saleValue.toString().length
-        return product ? res.status(200).json({ ...product, saleValue:saleValue.toFixed(saleValueDigitsCount - 1) }) : res.status(204).send()
+        return product ? res.status(200).json({ ...product, saleValue: saleValue.toFixed(saleValueDigitsCount - 1) }) : res.status(204).send()
     }
 
     async create(req: Request, res: Response) {
@@ -72,7 +81,7 @@ class ProductsController {
 }
 
 
- async function getLastProfit() {
+async function getLastProfit() {
     const currentProductProfitId = await ProductsProfits.max('id')
     const currentProductProfit = await ProductsProfits.findOne({
         where: {

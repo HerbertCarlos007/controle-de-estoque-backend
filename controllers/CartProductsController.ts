@@ -2,7 +2,8 @@ import { Request, Response } from "express";
 import { CartProducts } from "../models/CartProducts";
 import { Products } from '../models/Products'
 import { getLastProfit } from "../utils/getLastProfit";
-import { Users } from '../models/Users'
+
+
 interface IProduct {
     id: number,
     name: string,
@@ -24,7 +25,7 @@ class CartProductsController {
             where: {
                 productId,
                 userId: 1,
-                
+
             }
         })
         if (productCartAlreadyCreated) {
@@ -90,6 +91,16 @@ class CartProductsController {
 
         return res.status(200).json({ result: 'ok' })
 
+    }
+
+    async delete(req: Request, res: Response) {
+        const { id } = req.params
+        await CartProducts.destroy({
+            where: {
+                productId: id
+            }
+        })
+        return res.status(204).send()
     }
 }
 
