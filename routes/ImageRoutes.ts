@@ -8,7 +8,7 @@ import multerConfig from '../config/multer'
 const upload = multer(multerConfig)
 
 ImageRouter.post('/upload', upload.single('file'), async (req: Request, res: Response) => {
-   
+    
 
     return res.status(200).json()
 })

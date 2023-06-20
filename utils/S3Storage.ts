@@ -1,30 +1,30 @@
 import aws, { AWSError, S3 } from 'aws-sdk'
-import path from 'path'
+import path from 'path';
 import multerConfig from '../config/multer'
-import mime from 'mime'
+import mime from 'mime';
 import fs from 'fs'
-import { GetObjectAclOutput, GetObjectOutput } from 'aws-sdk/clients/s3'
+import { GetObjectOutput, PutObjectOutput, } from 'aws-sdk/clients/s3';
 
 class S3Storage {
-    private client: S3
+    private client: S3;
 
     constructor() {
         this.client = new aws.S3({
-            region: 'us-east-1'
+            region: 'us-east-1',
         })
     }
 
-    async saveFile(filename: string): Promise<any> {
+    async saveFile(filename: string):  Promise<any> {
         try {
-            const originPath = path.resolve(multerConfig.directory, filename)
+            const originalPath = path.resolve(multerConfig.directory, filename)
 
-            const contentType = mime.getType(originPath)
+            const contentType = mime.getType(originalPath)
 
             if (!contentType) {
                 throw new Error('file not found')
             }
 
-            const fileContent = await fs.promises.readFile(originPath)
+            const fileContent = await fs.promises.readFile(originalPath)
 
             const result = await this.client.putObject({
                 Bucket: 'teste-startpn',
@@ -34,12 +34,12 @@ class S3Storage {
                 ACL: 'public-read',
             })
                 .promise()
-            await fs.promises.unlink(originPath)
-            console.log({ result })
+            await fs.promises.unlink(originalPath)
+            console.log({result})
             return result
 
         } catch (error) {
-            console.log(error)
+            console.error(error)
             throw error
         }
     }
@@ -52,11 +52,11 @@ class S3Storage {
             .promise()
     }
 
-    async getFile(filename: string): Promise<GetObjectOutput> {
+    async getFile(fileName: string): Promise<GetObjectOutput> {
         try {
-            const fileReturn = await this.client.getObject({
+            const fileReturn =  await this.client.getObject({
                 Bucket: 'teste-startpn',
-                Key: filename
+                Key: fileName
             })
                 .promise()
             return fileReturn
@@ -64,6 +64,7 @@ class S3Storage {
             console.error(error)
             throw error
         }
+     
     }
 }
 

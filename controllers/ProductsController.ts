@@ -3,24 +3,16 @@ import { Products } from "../models/Products";
 import { ProductsProfits } from '../models/ProductProfit'
 import UploadImageService from "../services/UploadImageService";
 
-
 class ProductsController {
 
     async findAll(req: Request, res: Response) {
-        const { file } = req
         const currentProductProfit = await getLastProfit()
         const products = await Products.findAll()
-        const uploadImage = new UploadImageService
-
-        if (file) {
-            await uploadImage.execute(file)
-        }
-
         const productsWithSaleValue = products.map(product => ({
             id: product.id,
             name: product.name,
             description: product.description,
-            imageUrl: file ? `https://teste-startpn.s3.amazonaws.com/${file.filename}` : null,
+            imageUrl: product.imageUrl,
             amount: product.amount,
             brand: product.brand,
             purchasePrice: product.purchasePrice,
@@ -45,19 +37,22 @@ class ProductsController {
     }
 
     async create(req: Request, res: Response) {
-        const { name, description, imageUrl, amount, brand, purchasePrice } = req.body
-        const products = await Products.create({
-            name,
-            description,
-            imageUrl,
-            amount,
-            brand,
-            purchasePrice,
+        const { file } = req
+        const { productData } = req.body
+        const parsedProductData = JSON.parse(productData)
+        const uploadImage = new UploadImageService()
 
+        if (file) {
+            await uploadImage.execute(file)
+        }
+
+        const products = await Products.create({
+            imageUrl: file ? `https://teste-startpn.s3.amazonaws.com/${file.filename}` : null,
+            ...parsedProductData
         })
         return res.status(201).json(products)
     }
-
+    
     async update(req: Request, res: Response) {
         const { id } = req.params
         await Products.update(req.body, {
@@ -93,3 +88,4 @@ async function getLastProfit() {
 }
 
 export default new ProductsController();
+

@@ -1,8 +1,11 @@
 import ProductsController from '../controllers/ProductsController'
+import multer = require('multer')
+import multerConfig from '../config/multer'
 
 const productsRouter = require('express').Router()
+const upload = multer(multerConfig)
 
-productsRouter.post('/products', ProductsController.create)
+productsRouter.post('/products', upload.single('file'),ProductsController.create)
 
 productsRouter.get('/products', ProductsController.findAll)
 
