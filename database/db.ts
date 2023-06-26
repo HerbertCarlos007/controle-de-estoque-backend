@@ -4,7 +4,6 @@ import {Products} from '../models/Products'
 import { CartProducts } from '../models/CartProducts'
 import { Users } from '../models/Users'
 
-
 const sequelize = new Sequelize({
   database: process.env.DATABASE_NAME,
   dialect: 'mysql',
