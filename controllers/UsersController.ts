@@ -48,11 +48,11 @@ class UserController {
             }
 
             const transporter = nodemailer.createTransport({
-                host: "sandbox.smtp.mailtrap.io",
-                port: 2525,
+                host: String(process.env.EMAIL_HOST),
+                port: Number(process.env.EMAIL_PORT),
                 auth: {
-                  user: "e3499966d3caee",
-                  pass: "1996af8c782c31"
+                  user: process.env.EMAIL_USER,
+                  pass: process.env.EMAIL_PASSWORD
                 }
               });
 
