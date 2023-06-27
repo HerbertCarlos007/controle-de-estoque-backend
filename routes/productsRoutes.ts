@@ -1,18 +1,19 @@
 import ProductsController from '../controllers/ProductsController'
+import { AuthMiddleware } from '../middlewares/auth'
 import multer = require('multer')
 import multerConfig from '../config/multer'
 
 const productsRouter = require('express').Router()
 const upload = multer(multerConfig)
 
-productsRouter.post('/products', upload.single('file'),ProductsController.create)
+productsRouter.post('/products', AuthMiddleware, upload.single('file'), ProductsController.create)
 
-productsRouter.get('/products', ProductsController.findAll)
+productsRouter.get('/products', AuthMiddleware, ProductsController.findAll)
 
-productsRouter.get('/products/:id', ProductsController.findOne)
+productsRouter.get('/products/:id', AuthMiddleware, ProductsController.findOne)
 
-productsRouter.put('/products/:id', ProductsController.update)
+productsRouter.put('/products/:id', AuthMiddleware, ProductsController.update)
 
-productsRouter.delete('/products/:id', ProductsController.delete)
+productsRouter.delete('/products/:id', AuthMiddleware, ProductsController.delete)
 
 export default productsRouter 
