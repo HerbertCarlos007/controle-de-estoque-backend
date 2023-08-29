@@ -6,7 +6,7 @@ const userRouter = require('express').Router()
 
 userRouter.post('/register', UserController.store)
 userRouter.post('/auth', AuthController.authenticate)
-userRouter.get('/users', AuthMiddleware, UserController.findAllUser)
+userRouter.get('/users/:id', AuthMiddleware, UserController.findAllUser)
 userRouter.post('/recover-password', UserController.recoverPassword)
 userRouter.put('/forgot-password/:id', UserController.forgotPassword)
 
