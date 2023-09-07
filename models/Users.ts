@@ -1,5 +1,6 @@
-import { Table, Column, Model, DataType, AllowNull } from 'sequelize-typescript'
+import { Table, Column, Model, DataType, AllowNull, ForeignKey } from 'sequelize-typescript';
 import { Optional } from 'sequelize'
+import { Store } from './Store';
 
 interface UsersAttributes {
     id: number
@@ -7,6 +8,7 @@ interface UsersAttributes {
     email: string,
     password: string,
     role: string
+    store_id: string
 }
 
 interface UsersCreationAttributes extends Optional<UsersAttributes, 'id'> { }
@@ -29,6 +31,10 @@ class Users extends Model<UsersAttributes, UsersCreationAttributes> {
 
     @Column(DataType.TEXT)
     password: string | undefined
+    
+    @ForeignKey(() => Store)
+    @Column(DataType.TEXT)
+    store_id: string | undefined
 
 }
 

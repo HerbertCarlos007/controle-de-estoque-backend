@@ -1,5 +1,6 @@
 import { Table, Column, Model, DataType, AllowNull, ForeignKey } from 'sequelize-typescript';
 import { Users } from './Users';
+import { Store } from './Store';
 
 interface ProductsAttributes {
   id: number;
@@ -9,7 +10,8 @@ interface ProductsAttributes {
   amount: number;
   brand: string;
   purchasePrice: number;
-  userId: number; // Agora userId é obrigatório
+  userId: number; 
+  store_id: string
 }
 
 @Table({
@@ -38,6 +40,10 @@ class Products extends Model<ProductsAttributes> {
   @ForeignKey(() => Users)
   @Column(DataType.INTEGER)
   userId: number | undefined;
+  
+  @ForeignKey(() => Store)
+  @Column(DataType.TEXT)
+  store_id: string | undefined
 }
 
 export { Products };

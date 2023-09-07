@@ -6,30 +6,29 @@ import UploadImageService from "../services/UploadImageService";
 class ProductsController {
 
     async findAll(req: Request, res: Response) {
-    const currentProductProfit = await getLastProfit();
-     //@ts-ignore
-    const userId = req.userId; 
-    
-    const products = await Products.findAll({
-        where: {
-            id: userId
-        }
-    });
+        const currentProductProfit = await getLastProfit();
+        const {store_id} = req.params
+       
+        const products = await Products.findAll({
+            where: {
+                store_id
+            }
+        });
 
-    const productsWithSaleValue = products.map(product => ({
-        id: product.id,
-        name: product.name,
-        description: product.description,
-        imageUrl: product.imageUrl,
-        amount: product.amount,
-        brand: product.brand,
-        purchasePrice: product.purchasePrice,
-        saleValue: Number(product.purchasePrice) + (Number(product.purchasePrice) * Number(currentProductProfit?.percentage))
-    }));
-    
-    return products.length > 0 ? res.status(200).json({ products: productsWithSaleValue, currentProductProfit }) :
-        res.status(204).send();
-}
+        const productsWithSaleValue = products.map(product => ({
+            id: product.id,
+            name: product.name,
+            description: product.description,
+            imageUrl: product.imageUrl,
+            amount: product.amount,
+            brand: product.brand,
+            purchasePrice: product.purchasePrice,
+            saleValue: Number(product.purchasePrice) + (Number(product.purchasePrice) * Number(currentProductProfit?.percentage))
+        }));
+
+        return products.length > 0 ? res.status(200).json({ products: productsWithSaleValue, currentProductProfit }) :
+            res.status(204).send();
+    }
 
 
     async findOne(req: Request, res: Response) {
@@ -50,9 +49,6 @@ class ProductsController {
         const { file } = req;
         const { productData } = req.body;
         const parsedProductData = JSON.parse(productData);
-        //@ts-ignore
-        const userId = req.userId
-
         const uploadImage = new UploadImageService();
 
         if (file) {
@@ -61,7 +57,6 @@ class ProductsController {
 
         const product = await Products.create({
             imageUrl: file ? `https://teste-startpn.s3.amazonaws.com/${file.filename}` : null,
-            userId,
             ...parsedProductData,
         });
 

@@ -12,7 +12,7 @@ class UserController {
     }
 
     async store(req: Request, res: Response) {
-        const { name, email, password, role } = req.body
+        const { name, email, password, role, store_id } = req.body
 
         const userExists = await Users.findOne({
             where: {
@@ -28,7 +28,9 @@ class UserController {
             name,
             email,
             role,
-            password: hashPassword
+            password: hashPassword,
+            store_id
+            
         })
         return res.status(200).json(user)
     }

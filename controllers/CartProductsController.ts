@@ -19,13 +19,13 @@ interface IProductCart {
 class CartProductsController {
 
     async addToCart(req: Request, res: Response) {
-        const { productId, userId } = req.body
+        const { productId, userId, store_id } = req.body
 
         const productCartAlreadyCreated = await CartProducts.findOne({
             where: {
                 productId,
-                userId: 1,
-
+                userId,
+                store_id,
             }
         })
         if (productCartAlreadyCreated) {
@@ -35,7 +35,8 @@ class CartProductsController {
             }, {
                 where: {
                     productId,
-                    userId: 1
+                    userId,
+                    store_id,
                 }
             })
             return res.status(201).json({ result: 'ok' })
@@ -43,7 +44,8 @@ class CartProductsController {
         }
         const cart = await CartProducts.create({
             productId,
-            userId: 1,
+            userId,
+            store_id,
             quantity: 1
         })
 
