@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  mysqldb:
+    image: mysql:5.7
+    restart: always
+    env_file: ./.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=$DATABASE_PASS
+      - MYSQL_DATABASE=$DATABASE_NAME
+    ports:
+      - $MYSQLDB_LOCAL_PORT:$MYSQLDB_LOCAL_PORT
+    volumes:
+      - db:/var/lib/mysqldata
+volumes: 
+  db:
