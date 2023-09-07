@@ -53,18 +53,23 @@ class CartProductsController {
     }
 
     async productsOnCart(req: Request, res: Response) {
+        
+        const {store_id, userId} = req.params
 
         Products.hasMany(CartProducts)
         CartProducts.belongsTo(Products)
         const currentProductProfit = await getLastProfit()
         const products = (await CartProducts.findAll({
+            where: {
+             store_id,
+             userId   
+            },
+            
             include: [{
                 model: Products,
                 required: true
             }]
         })) as IProductCart[]
-
-
 
 
         const productCartWithSaleValue = products.map((productCart: IProductCart) => {

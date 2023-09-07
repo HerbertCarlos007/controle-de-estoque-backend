@@ -6,7 +6,7 @@ import multerConfig from '../config/multer'
 const productsRouter = require('express').Router()
 const upload = multer(multerConfig)
 
-productsRouter.post('/products',  upload.single('file'), ProductsController.create)
+productsRouter.post('/products', upload.single('file'), ProductsController.create)
 
 productsRouter.get('/products/:store_id', AuthMiddleware, ProductsController.findAll)
 

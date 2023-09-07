@@ -26,8 +26,6 @@ app.get('/', (req: Request,res: Response) => {
     res.json({message: 'Oi Express!'})
 })
 
-
-
 app.listen(process.env.PORT, async () => {
     await sequelize.sync()
     console.log(`Porta: ${process.env.PORT}`)

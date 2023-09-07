@@ -14,6 +14,8 @@ class ProductsController {
                 store_id
             }
         });
+        
+        console.log({products})
 
         const productsWithSaleValue = products.map(product => ({
             id: product.id,
@@ -47,7 +49,7 @@ class ProductsController {
 
     async create(req: Request, res: Response) {
         const { file } = req;
-        const { productData } = req.body;
+        const { productData, store_id } = req.body;
         const parsedProductData = JSON.parse(productData);
         const uploadImage = new UploadImageService();
 
@@ -57,6 +59,7 @@ class ProductsController {
 
         const product = await Products.create({
             imageUrl: file ? `https://teste-startpn.s3.amazonaws.com/${file.filename}` : null,
+            store_id,
             ...parsedProductData,
         });
 
