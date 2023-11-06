@@ -8,7 +8,8 @@ interface UsersAttributes {
     email: string,
     password: string,
     role: string
-    store_id: string
+    store_id: string,
+    levelPermission: number
 }
 
 interface UsersCreationAttributes extends Optional<UsersAttributes, 'id'> { }
@@ -35,6 +36,10 @@ class Users extends Model<UsersAttributes, UsersCreationAttributes> {
     @ForeignKey(() => Store)
     @Column(DataType.TEXT)
     store_id: string | undefined
+    
+    @ForeignKey(() => Store)
+    @Column(DataType.INTEGER)
+    levelPermission: number | undefined
 
 }
 
