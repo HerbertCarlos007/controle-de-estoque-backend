@@ -24,8 +24,8 @@ class AuthController {
         }
         
         const token = sign({id: user.id}, String(process.env.SECRET), {expiresIn: '1d'})
-        const { id, store_id } = user
-        return res.status(200).json({ user: { id, email, store_id }, token })
+        const { id, store_id, levelPermission } = user
+        return res.status(200).json({ user: { id, email, store_id, levelPermission }, token })
     }
 }
 
