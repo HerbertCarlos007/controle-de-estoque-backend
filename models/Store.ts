@@ -6,7 +6,8 @@ import { Optional } from 'sequelize'
 interface StoreAttributes {
     id: number
     name: string
-    subdomain: string
+    subdomain: string,
+    banner: string,
 }
 
 interface StoreCreationAttributes extends Optional<StoreAttributes, 'id'> { }
@@ -20,7 +21,10 @@ class Store extends Model<StoreAttributes, StoreCreationAttributes> {
     name: string | undefined;
     
     @Column(DataType.TEXT)
-    subdomain!: string | undefined
+    subdomain!: string | undefined;
+    
+    @Column(DataType.TEXT)
+    banner!: string | undefined
 
 }
 
