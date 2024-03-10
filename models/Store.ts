@@ -8,6 +8,10 @@ interface StoreAttributes {
     name: string
     subdomain: string,
     banner: string,
+    store_name: string,
+    logo: string,
+    background: string,
+    colors: string
 }
 
 interface StoreCreationAttributes extends Optional<StoreAttributes, 'id'> { }
@@ -25,7 +29,18 @@ class Store extends Model<StoreAttributes, StoreCreationAttributes> {
     
     @Column(DataType.TEXT)
     banner!: string | undefined
-
+    
+    @Column(DataType.TEXT)
+    store_name!: string | undefined
+    
+    @Column(DataType.TEXT)
+    logo!: string | undefined
+    
+    @Column(DataType.TEXT)
+    background!: string | undefined
+    
+    @Column(DataType.TEXT)
+    colors!: string | undefined
 }
 
 export { Store }

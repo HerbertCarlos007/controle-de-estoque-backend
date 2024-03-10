@@ -3,7 +3,7 @@ import {Store} from '../models/Store'
 
 class StoreController {
     async create(req: Request, res: Response) {
-        const {name, subdomain, banner} = req.body
+        const {name, subdomain, banner, store_name, logo, background, colors} = req.body
         
         const storeExists = await Store.findOne({
             where: {
@@ -16,7 +16,7 @@ class StoreController {
         }
         
         const store = await Store.create({
-            name, subdomain, banner
+            name, subdomain, banner, store_name, logo, background, colors
         })
         
         return res.status(200).json(store)
