@@ -4,6 +4,7 @@ import {Products} from '../models/Products'
 import { CartProducts } from '../models/CartProducts'
 import { Users } from '../models/Users'
 import {Store} from '../models/Store'
+import {CustomFields} from '../models/CustomFields'
 
 const sequelize = new Sequelize({
   database: process.env.DATABASE_NAME,
@@ -12,6 +13,6 @@ const sequelize = new Sequelize({
   password: process.env.DATABASE_PASS,
   host: process.env.DATABASE_HOST,
 })
-sequelize.addModels([Products, Users, ProductsProfits, CartProducts, Store])
+sequelize.addModels([Products, Users, ProductsProfits, CartProducts, Store, CustomFields])
 
 export {sequelize}

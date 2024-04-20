@@ -1,27 +1,27 @@
 import { Request, Response } from "express";
-import {Store} from '../models/Store'
+import { Store } from '../models/Store'
 
 class StoreController {
     async create(req: Request, res: Response) {
-        const {name, subdomain, banner, store_name, logo, background, colors} = req.body
-        
+        const { subdomain, banner, logo, background, colors } = req.body
+
         const storeExists = await Store.findOne({
             where: {
-                name
+                subdomain
             }
         })
-        
-        if(storeExists) {
+
+        if (storeExists) {
             return res.json({ error: 'Loja já existe' })
         }
-        
+
         const store = await Store.create({
-            name, subdomain, banner, store_name, logo, background, colors
+            subdomain, banner
         })
-        
+
         return res.status(200).json(store)
     }
-    
+
     async getBySubdomain(req: Request, res: Response) {
         const store = await Store.findOne({
             where: {
